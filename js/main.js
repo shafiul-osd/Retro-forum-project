@@ -3,11 +3,13 @@ const searchBtn = document.getElementById('search-btn');
 const searchInput = document.getElementById('search-input');
 const markAsCount = document.getElementById('mark-as-count');
 
+const loading = document.getElementById('loading');
+
 let markedPosts = [];
 
 const fetchPost = (searchText) => {
     searchText = typeof searchText === "undefined" || searchText === "" ? 'posts' : `posts?category=${searchText}`;
-    
+    loading.classList.remove('hidden');
     let url = `https://openapi.programming-hero.com/api/retro-forum/${searchText}`;
     fetch(url)
         .then(res => res.json())
@@ -61,11 +63,15 @@ const fetchPost = (searchText) => {
                 markAsReadIcon.addEventListener('click', () => {
                     handleMarkAsRead(title, view_count);
                 });
+                loading.classList.add('hidden')
             })
         })
 }
 
 searchBtn.addEventListener("click", () => {
+	
+	loading.classList.remove('hidden');
+	
     postContainer.innerHTML = '';
     const searchText = searchInput.value;
     fetchPost(searchText);
@@ -113,6 +119,7 @@ const fetchLatestPost = ()=>{
                 `;
                 latestPostContainer.appendChild(div);
             })
+            
         })
 }
 
